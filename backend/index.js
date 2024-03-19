@@ -17,9 +17,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static("./public"))
 
 
-app.use('/',studentRoutes);
+app.use('/',studentRoutes)
 app.use('/teacher',teacherRoutes)
-app.use('/admin',adminRoutes);
+app.use('/admin',adminRoutes)
 
 const PORT = process.env.PORT || 5000;
 connectDB();
