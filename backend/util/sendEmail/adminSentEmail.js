@@ -76,7 +76,6 @@ export const adminForgotEmail = async (adminEmail, otp) => {
             <p>Your OTP for password reset..!:</p>
             <div class="otp">${otp}</div>
             <p>If you did not request this, please ignore this email.</p>
-            // <a href="#" class="cta-button">Verify Email</a>
           </div>
         </body>
         </html>`,
