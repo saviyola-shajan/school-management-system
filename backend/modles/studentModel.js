@@ -10,6 +10,11 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     studentId: {
       type: String,
       required: true,
@@ -20,6 +25,10 @@ const studentSchema = mongoose.Schema(
       required: true,
     },
     password: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
       type: String,
       required: true,
     },
@@ -35,7 +44,7 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    class: {
+    Class: {
       type: String,
       required: true,
     },

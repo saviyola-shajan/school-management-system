@@ -11,11 +11,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const teacherEmail = async (email, password,teacherId) => {
+export const sendEmailwithCredentials = async (email, password,ID) => {
     const mailOptions = {
       from: "xavishajan44@gmail.com",
       to: email,
-      subject: "TeacherId and password for Login",
+      subject: "ID and password for Login",
       html: `<html lang="en">
           <head>
             <meta charset="UTF-8">
@@ -73,8 +73,8 @@ export const teacherEmail = async (email, password,teacherId) => {
             <div class="container">
               <h1>TeacherID and Password for login</h1>
               <p>Hello, welcome to ......!</p>
-              <p>Your TeacherId for Login:</p>
-              <div class="TeacherID">${teacherId}</div>
+              <p>Your ID for Login:</p>
+              <div class="ID">${ID}</div>
               <p>Your Password for Login:</p>
               <div class="Password">${password}</div>
               <p>If you did not request this, please ignore this email.</p>

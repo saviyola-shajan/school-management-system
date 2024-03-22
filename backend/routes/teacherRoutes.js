@@ -3,7 +3,7 @@ import { teacherLogin,teacherForgotPassword,teacherVerifyOtp,teacherResetPasswor
 const teacherRouter=express.Router()
 
 
-
+//teacher login
 // teacherRouter.get("",teacherLogin)
 teacherRouter.post("/login",teacherLogin)
 teacherRouter.post("/forgotpassword",teacherForgotPassword)

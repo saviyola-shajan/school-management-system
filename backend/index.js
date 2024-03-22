@@ -28,7 +28,7 @@ app.use(session({
 }))
 
 
-app.use('/api/',studentRoutes)
+app.use('/api/student',studentRoutes)
 app.use('/api/teacher',teacherRoutes)
 app.use('/api/admin',adminRoutes)
 

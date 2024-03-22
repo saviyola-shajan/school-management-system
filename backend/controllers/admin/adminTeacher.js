@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import otpGenerator from "otp-generator";
 import Teacher from "../../modles/teacherModel.js";
-import { teacherEmail } from "../../util/sendEmail/teacherSendEmail.js";
+import { sendEmailwithCredentials } from "../../util/sendEmail/sendEmailForLogin.js";
 import bcrypt from 'bcrypt'
 
 //add teacher
@@ -20,6 +20,7 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
       image,
       Class,
     } = req.body;
+    const imageUrl=req.file.originalname
     const { addressType, city, state, pinCode, landMark } = address;
     if (
       !name ||
@@ -56,13 +57,13 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
         landMark,
       },
       section,
-      image,
+      image:imageUrl,
       Class,
     });
     await teacher.save()
-    const sendEmail=await teacherEmail(email,password,teacherId)
+    const sendEmail=await sendEmailwithCredentials(email,password,teacherId)
     if(sendEmail){
-        res.status(201).json({message:"Teacher added sucessfully . email and Password sent to Email for Login",teacher})
+        res.status(201).json({message:"Teacher added sucessfully . Email and Password sent to Email for Login",teacher})
     }else{
         res.status(401).json({message:"Error in adding teacher and sending email"})
     }

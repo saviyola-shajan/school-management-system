@@ -108,7 +108,7 @@ export const adminVerifyOtp = asyncHandler(async (req, res) => {
   try {
     const { otp } = req.body;
     if (!otp) {
-      res.status(400).json({ message: "OTP required" });
+      return res.status(400).json({ message: "OTP required" });
     }
     console.log(req.session);
     const sessionData = req.session;
@@ -118,13 +118,13 @@ export const adminVerifyOtp = asyncHandler(async (req, res) => {
     const storedOTP = sessionData.otp;
     console.log(storedOTP);
     if (!storedOTP || otp !== storedOTP) {
-      res.status(400).json({ message: "Invalid OTP" });
+    return  res.status(400).json({ message: "Invalid OTP" });
     }
     const otpGeneratedTime = sessionData.otpGeneratedTime || 0;
     const currentTime = Date.now();
     const otpExpirationTime = 30 * 1000;
     if (currentTime - otpGeneratedTime > otpExpirationTime) {
-      res.status(400).json({ message: "OTP has expired" });
+    return  res.status(400).json({ message: "OTP has expired" });
     }
     if (storedOTP === otp) {
       res.status(200).json({ admin, message: "OTP verified sucessfully" });
