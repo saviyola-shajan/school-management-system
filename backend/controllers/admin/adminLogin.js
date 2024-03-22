@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Admin from "../../modles/adminModel.js";
-import generateToken from "../../util/adminToken.js";
-import { adminForgotEmail } from "../../util/sendEmail/adminSentEmail.js";
+import generateToken from "../../util/token.js";
+import { sendForgotEmail } from "../../util/sendEmail/forgotPasswordEmail.js";
 import bcrypt from "bcrypt";
 import otpGenerator from "otp-generator";
 
@@ -11,10 +11,12 @@ export const adminSignup = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const adminExist = await Admin.findOne({ email });
     if (!email || !password) {
-      res.status(400).json({message:"Please fill all the fields"});
+      res.status(400).json({ message: "Please fill all the fields" });
     }
     if (adminExist) {
-      res.status(400).json({message:"Admin with this mail already exist...!"});
+      res
+        .status(400)
+        .json({ message: "Admin with this mail already exist...!" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const admin = await Admin.create({
@@ -23,12 +25,14 @@ export const adminSignup = asyncHandler(async (req, res) => {
       password: hashedPassword,
     });
     if (admin) {
-      generateToken(res, admin._id);
       res.status(200).json({
         _id: admin.id,
         name: admin.name,
         email: admin.email,
+        token: generateToken(res, admin._id),
       });
+    }else{
+      res.status(500).json({message:"Invalid admin data details"})
     }
   } catch (error) {
     res.status(400);
@@ -41,16 +45,18 @@ export const adminLogin = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      res.status(400).json({message:"Please add fields"});
+      res.status(400).json({ message: "Please add fields" });
     }
     const admin = await Admin.findOne({ email });
     if (admin && (await bcrypt.compare(password, admin.password))) {
-      generateToken(res, admin._id);
       res.status(200).json({
         _id: admin.id,
         name: admin.name,
         email: admin.email,
+        token: generateToken(res, admin._id),
       });
+    } else {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
     res.status(400);
@@ -64,11 +70,11 @@ export const adminForgotPassword = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
-      res.status(400).json({message:"Please enter email"});
+      res.status(400).json({ message: "Please enter email" });
     }
     const admin = await Admin.findOne({ email });
     if (!admin) {
-      res.status(400).json({message:"Email not found"});
+      res.status(400).json({ message: "Email not found" });
     }
     const options = {
       digits: true,
@@ -85,7 +91,7 @@ export const adminForgotPassword = asyncHandler(async (req, res) => {
     console.log(otp);
     console.log(sessionData);
 
-    const sendMail = await adminForgotEmail(admin.email, otp);
+    const sendMail = await sendForgotEmail(admin.email, otp);
     if (sendMail) {
       res.status(200).json({ message: "OTP Send" });
     } else {
@@ -102,26 +108,26 @@ export const adminVerifyOtp = asyncHandler(async (req, res) => {
   try {
     const { otp } = req.body;
     if (!otp) {
-      res.status(400).json({message:"OTP required"});
+      res.status(400).json({ message: "OTP required" });
     }
     console.log(req.session);
     const sessionData = req.session;
-    const adminEmail=sessionData.email
+    const adminEmail = sessionData.email;
     const admin = await Admin.findOne({ adminEmail });
-console.log(admin);
+    console.log(admin);
     const storedOTP = sessionData.otp;
     console.log(storedOTP);
     if (!storedOTP || otp !== storedOTP) {
-      res.status(400).json({message:"Invalid OTP"});
+      res.status(400).json({ message: "Invalid OTP" });
     }
     const otpGeneratedTime = sessionData.otpGeneratedTime || 0;
     const currentTime = Date.now();
     const otpExpirationTime = 30 * 1000;
     if (currentTime - otpGeneratedTime > otpExpirationTime) {
-      res.status(400).json({message:"OTP has expired"});
+      res.status(400).json({ message: "OTP has expired" });
     }
     if (storedOTP === otp) {
-      res.status(200).json({ admin, message: "OTP verified sucessfully" }); 
+      res.status(200).json({ admin, message: "OTP verified sucessfully" });
     }
   } catch (error) {
     res.status(400);
@@ -129,21 +135,23 @@ console.log(admin);
   }
 });
 
+//if needed set resend otp
+
 //admin reset password
 export const adminResetPassword = asyncHandler(async (req, res) => {
   try {
-    const {password,confirmPassword } = req.body;
+    const { password, confirmPassword } = req.body;
     if (!password) {
-      res.status(400).json({message:"please enter password"});
+      res.status(400).json({ message: "please enter password" });
     }
     if (password !== confirmPassword) {
-      res.status(400).json({message:'Password do not match'});
+      res.status(400).json({ message: "Password do not match" });
     }
-    const sessionData=req.session
-    const adminEmail=sessionData.email
+    const sessionData = req.session;
+    const adminEmail = sessionData.email;
     const admin = await Admin.findOne({ adminEmail });
     if (!admin) {
-      res.status(400).json({message:"User not found"});
+      res.status(400).json({ message: "User not found" });
     }
     if (admin) {
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -153,6 +161,7 @@ export const adminResetPassword = asyncHandler(async (req, res) => {
     }
     delete sessionData.adminDeatils;
     delete sessionData.otp;
+    delete sessionData.otpGeneratedTime;
   } catch (error) {
     res.status(500);
     throw new Error("Internal server Error");

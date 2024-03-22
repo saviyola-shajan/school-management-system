@@ -1,9 +1,13 @@
 import express from "express"
-import { teacherLogin } from "../controllers/teacher/teacherLogin.js"
+import { teacherLogin,teacherForgotPassword,teacherVerifyOtp,teacherResetPassword } from "../controllers/teacher/teacherLogin.js"
 const teacherRouter=express.Router()
 
 
 
-teacherRouter.get("",teacherLogin)
+// teacherRouter.get("",teacherLogin)
+teacherRouter.post("/login",teacherLogin)
+teacherRouter.post("/forgotpassword",teacherForgotPassword)
+teacherRouter.post("/verifyotp",teacherVerifyOtp)
+teacherRouter.post("/resetpassword",teacherResetPassword)
 
 export default teacherRouter

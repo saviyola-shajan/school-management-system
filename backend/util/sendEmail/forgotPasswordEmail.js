@@ -11,10 +11,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const adminForgotEmail = async (adminEmail, otp) => {
+export const sendForgotEmail = async (email, otp) => {
   const mailOptions = {
     from: "xavishajan44@gmail.com",
-    to: adminEmail,
+    to: email,
     subject: "For verification purpose",
     html: `<html lang="en">
         <head>

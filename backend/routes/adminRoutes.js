@@ -6,8 +6,8 @@ const adminRouter =express.Router()
 //login routes
 adminRouter.post("/adminsignup",adminSignup)
 adminRouter.post("/login",adminLogin)
-adminRouter.post('/forgot',adminForgotPassword)
-adminRouter.post('/verifyemail',adminVerifyOtp)
+adminRouter.post('/forgotpassword',adminForgotPassword)
+adminRouter.post('/verifyotp',adminVerifyOtp)
 adminRouter.post('/resetpassword',adminResetPassword)
 
 //admin teacher routes
