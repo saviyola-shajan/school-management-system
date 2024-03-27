@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import otpGenerator from "otp-generator";
-import Student from "../../modles/studentModel.js";
+import Student from "../../modles/student/studentModel.js";
 import bcrypt from "bcrypt";
 import { sendEmailwithCredentials } from "../../util/sendEmail/sendEmailForLogin.js";
 

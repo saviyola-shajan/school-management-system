@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Admin from "../../modles/adminModel.js";
+import Admin from "../../modles/admin/adminModel.js"
 import generateToken from "../../util/token.js";
 import { sendForgotEmail } from "../../util/sendEmail/forgotPasswordEmail.js";
 import bcrypt from "bcrypt";
