@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import generateToken from '../../util/token.js'
 import { sendForgotEmail } from '../../util/sendEmail/forgotPasswordEmail.js'
 import otpGenerator from 'otp-generator'
-import Student from '../../modles/studentModel.js'
+import Student from '../../modles/student/studentModel.js'
 
 //student login
 export const studentLogin = asyncHandler(async(req,res)=>{

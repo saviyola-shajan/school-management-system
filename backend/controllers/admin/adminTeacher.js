@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import otpGenerator from "otp-generator";
 import Teacher from "../../modles/teacher/teacherModel.js";
 import { sendEmailwithCredentials } from "../../util/sendEmail/sendEmailForLogin.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
 //add teacher
 export const adminAddTeacher = asyncHandler(async (req, res) => {
@@ -20,7 +20,7 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
       image,
       Class,
     } = req.body;
-    const imageUrl=req.file.originalname
+    const imageUrl = req.file.originalname;
     const { addressType, city, state, pinCode, landMark } = address;
     if (
       !name ||
@@ -36,13 +36,13 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
     ) {
       res.status(400).json({ message: "Please fill all fields" });
     }
-     const password=  await generatePassword()
-     const teacherId= await generateTeacherId()
-    const hashedPaassword=await bcrypt.hash(password, 10);
+    const password = await generatePassword();
+    const teacherId = await generateTeacherId();
+    const hashedPaassword = await bcrypt.hash(password, 10);
     const teacher = await Teacher.create({
       name,
       email,
-      password:hashedPaassword,
+      password: hashedPaassword,
       teacherId,
       phoneNumber,
       dob,
@@ -57,53 +57,117 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
         landMark,
       },
       section,
-      image:imageUrl,
+      image: imageUrl,
       Class,
     });
-    await teacher.save()
-    const sendEmail=await sendEmailwithCredentials(email,password,teacherId)
-    if(sendEmail){
-        res.status(201).json({message:"Teacher added sucessfully . Email and Password sent to Email for Login",teacher})
-    }else{
-        res.status(401).json({message:"Error in adding teacher and sending email"})
+    await teacher.save();
+    const sendEmail = await sendEmailwithCredentials(
+      email,
+      password,
+      teacherId
+    );
+    if (sendEmail) {
+      res
+        .status(201)
+        .json({
+          message:
+            "Teacher added sucessfully . Email and Password sent to Email for Login",
+          teacher,
+        });
+    } else {
+      res
+        .status(401)
+        .json({ message: "Error in adding teacher and sending email" });
     }
   } catch (error) {
-    res.status(400)
-    throw new Error(error)
+    res.status(400);
+    throw new Error(error);
   }
 });
 
 //generate password for teacher
-const generatePassword=asyncHandler(async(req,res)=>{
-    try{
-        const options = {
-            digits: true,
-            lowerCaseAlphabets: true,
-            upperCaseAlphabets: true,
-            specialChars: true,
-          };
-          const password = otpGenerator.generate(8, options);
-          console.log(password);
-          return password
-    }catch(error){
-        res.status(400)
-        throw new Error("can't generate password")
-    }
-})
-
+const generatePassword = asyncHandler(async (req, res) => {
+  try {
+    const options = {
+      digits: true,
+      lowerCaseAlphabets: true,
+      upperCaseAlphabets: true,
+      specialChars: true,
+    };
+    const password = otpGenerator.generate(8, options);
+    console.log(password);
+    return password;
+  } catch (error) {
+    res.status(400);
+    throw new Error("can't generate password");
+  }
+});
 
 //generate teacherId
-const generateTeacherId=asyncHandler(async(req,res)=>{
-    try{
-        let nextId=1
-        const teacherId = 'T' + nextId.toString().padStart(4, '0');
-        nextId++;
-        console.log(teacherId);
-        return teacherId;
-    }catch(error){
-        res.status(400)
-        throw new Error("can't generate teacherId")
-    }
-})
+const generateTeacherId = asyncHandler(async (req, res) => {
+  try {
+    let nextId = 1;
+    const teacherId = "T" + nextId.toString().padStart(4, "0");
+    nextId++;
+    console.log(teacherId);
+    return teacherId;
+  } catch (error) {
+    res.status(400);
+    throw new Error("can't generate teacherId");
+  }
+});
 
 //block teacher
+export const teacherBlock = asyncHandler(async (req, res) => {
+  try {
+    const teacherID = req.params._id;
+    const teacher = await Teacher.findOne({ teacherID });
+    console.log(teacher);
+    teacher.isBlock = true;
+    await teacher.save();
+    if (teacher) {
+      res.status(200).json({
+        isBlock: teacher.isBlock,
+        message: "Success",
+      });
+    } else {
+      res.status(400).json({ message: "Id Invalid" });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+//unblock teacher
+export const teacherUnBlock = asyncHandler(async (req, res) => {
+  try {
+    const teacherID = req.params._id;
+    const teacher = await Teacher.findOne({ teacherID });
+    console.log(teacher);
+    teacher.isBlock = false;
+    await teacher.save();
+    if (teacher) {
+      res.status(200).json({
+        isBlock: teacher.isBlock,
+        message: "Success",
+      });
+    } else {
+      res.status(400).json({ message: "Id Invalid" });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+//update teacher
+export const updateTeacher = asyncHandler(async (req, res) => {
+  try {
+    
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+//delete
+
+//add attendence teacher

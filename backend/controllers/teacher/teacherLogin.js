@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler'
-import Teacher from '../../modles/teacherModel.js'
+import Teacher from '../../modles/teacher/teacherModel.js'
 import bcrypt from 'bcrypt'
 import generateToken from '../../util/token.js'
 import { sendForgotEmail } from '../../util/sendEmail/forgotPasswordEmail.js'

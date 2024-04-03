@@ -25,33 +25,33 @@ export const adminAddStudent = asyncHandler(async (req, res) => {
       image,
       Class,
     } = req.body;
-    const imageUrl =req.file.originalname
+    const imageUrl = req.file.originalname;
     const { addressType, city, state, pinCode, landMark } = address;
-      if (
-        !firstName ||
-        !lastName||
-        !email ||
-        !phoneNumber ||
-        !dob ||
-        !bloodGroup ||
-        !address ||
-        !section ||
-        !image ||
-        !Class||
-        !fathersName||
-        !fathersPhoneNumber||
-        !mothersName||
-        !mothersPhoneNumber||
-        !guardianEmail
-      ) {
-        res.status(400).json({ message: "Please fill all fields" });
-      }
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phoneNumber ||
+      !dob ||
+      !bloodGroup ||
+      !address ||
+      !section ||
+      !image ||
+      !Class ||
+      !fathersName ||
+      !fathersPhoneNumber ||
+      !mothersName ||
+      !mothersPhoneNumber ||
+      !guardianEmail
+    ) {
+      res.status(400).json({ message: "Please fill all fields" });
+    }
     const password = await generatePassword();
     const studentId = await generateStudentId();
     const admissionNo = await generateAdmissionNo();
     const hashedPaassword = await bcrypt.hash(password, 10);
     const student = await Student.create({
-        firstName,
+      firstName,
       lastName,
       email,
       password: hashedPaassword,
@@ -69,7 +69,7 @@ export const adminAddStudent = asyncHandler(async (req, res) => {
         landMark,
       },
       section,
-      image:imageUrl,
+      image: imageUrl,
       Class,
       fathersName,
       fathersPhoneNumber,
@@ -84,13 +84,11 @@ export const adminAddStudent = asyncHandler(async (req, res) => {
       studentId
     );
     if (sendEmail) {
-      res
-        .status(201)
-        .json({
-          message:
-            "Student added sucessfully . Email and Password sent to Email for Login",
-          student,
-        });
+      res.status(201).json({
+        message:
+          "Student added sucessfully . Email and Password sent to Email for Login",
+        student,
+      });
     } else {
       res
         .status(401)
@@ -143,7 +141,49 @@ const generateAdmissionNo = asyncHandler(async (req, res) => {
     console.log(admissionNumber);
     return admissionNumber;
   } catch (error) {
-    res.status(400)
-    throw new Error("Can't generate admission number")
+    res.status(400);
+    throw new Error("Can't generate admission number");
+  }
+});
+
+//student block
+export const studentBlock = asyncHandler(async (req, res) => {
+  try {
+    const studentID = req.params._id;
+    const student = await Student.finOne({studentID});
+    console.log(student);
+    student.isBlock = true;
+    await student.save();
+    if (student) {
+      res.status(200).json({
+        isBlock: student.isBlock,
+        message: "Success",
+      });
+    } else {
+      res.status(400).json({ message: "Id Invalid" });
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+//student unblock
+export const studentUnBlock = asyncHandler(async (req, res) => {
+  try {
+    const studentID = req.params._id;
+    const student = await Teacher.findOne({studentID})
+    console.log(student)
+    student.isBlock = false;
+    await student.save();
+    if (student) {
+      res.status(200).json({
+        isBlock: student.isBlock,
+        message: "Success",
+      });
+    } else {
+      res.status(400).json({ message: "Id Invalid" });
+    }
+  } catch (error) {
+    throw new Error(error);
   }
 });
