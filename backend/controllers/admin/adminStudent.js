@@ -150,9 +150,9 @@ const generateAdmissionNo = asyncHandler(async (req, res) => {
 export const studentBlock = asyncHandler(async (req, res) => {
   try {
     const studentID = req.params._id;
-    const student = await Student.finOne({studentID});
+    const student = await Student.finOne({ studentID });
     console.log(student);
-    student.isBlock = true;
+    student.isBlock = !student.isBlock;
     await student.save();
     if (student) {
       res.status(200).json({
@@ -168,20 +168,90 @@ export const studentBlock = asyncHandler(async (req, res) => {
 });
 
 //student unblock
-export const studentUnBlock = asyncHandler(async (req, res) => {
+// export const studentUnBlock = asyncHandler(async (req, res) => {
+//   try {
+//     const studentID = req.params._id;
+//     const student = await Teacher.findOne({ studentID });
+//     console.log(student);
+//     student.isBlock = false;
+//     await student.save();
+//     if (student) {
+//       res.status(200).json({
+//         isBlock: student.isBlock,
+//         message: "Success",
+//       });
+//     } else {
+//       res.status(400).json({ message: "Id Invalid" });
+//     }
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+
+//update student
+export const updateStudent = asyncHandler(async (req, res) => {
   try {
     const studentID = req.params._id;
-    const student = await Teacher.findOne({studentID})
-    console.log(student)
-    student.isBlock = false;
-    await student.save();
-    if (student) {
-      res.status(200).json({
-        isBlock: student.isBlock,
-        message: "Success",
-      });
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      dob,
+      gender,
+      bloodGroup,
+      image,
+      address,
+    } = req.body;
+    const existingStudent = await Student.findOne({ studentID });
+    console.log(existingStudent);
+    if (!existingStudent) {
+      return res.status(404).json({ message: "student not found" });
+    }
+    if (firstName !== undefined && firstName !== "")
+      existingStudent.firstName = firstName;
+    if (lastName !== undefined && lastName !== "")
+      existingStudent.lastName = lastName;
+    if (email !== undefined && email !== "") existingStudent.email = email;
+    if (phoneNumber !== undefined && phoneNumber !== "")
+      existingStudent.phoneNumber = phoneNumber;
+    if (dob !== undefined && dob !== "") existingStudent.dob = dob;
+    if (gender !== undefined && gender !== "") existingStudent.gender = gender;
+    if (bloodGroup !== undefined && bloodGroup !== "")
+      existingStudent.bloodGroup = bloodGroup;
+    if (image !== undefined && image !== "") existingStudent.image = image;
+    if (address) {
+      const { pinCode, state, landMark, city, addressType } = address || {};
+
+      if (pinCode !== undefined && pinCode !== "")
+        existingStudent.address[0].pinCode = pinCode?.toString();
+      if (state !== undefined && state !== " ")
+        existingStudent.address[0].state = state?.toString();
+      if (landMark !== undefined && landMark && landMark !== "")
+        existingStudent.address[0].landMark = landMark?.toString();
+      if (city !== undefined && city !== "")
+        existingStudent.address[0].city = city?.toString();
+      if (addressType !== undefined && addressType !== "")
+        existingStudent.address[0].addressType = addressType?.toString();
+    }
+    await existingStudent.save();
+    res
+      .status(200)
+      .json({ message: "Student updated successfully", existingStudent });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+//delete student
+export const deleteStudent = asyncHandler(async (req, res) => {
+  try {
+    const studentID = req.params._id;
+    const deletedStudent = await Student.findOneAndDelete({ studentID });
+    if (deletedStudent) {
+      res.status(200).json({ message: "Teacher deleted successfully" });
     } else {
-      res.status(400).json({ message: "Id Invalid" });
+      res.status(404).json({ message: "Teacher not found" });
     }
   } catch (error) {
     throw new Error(error);

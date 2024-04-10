@@ -58,7 +58,6 @@ const teacherSchema = mongoose.Schema(
       {
         addressType: {
           type: String,
-          enum: ["Home", "Permanent", "Temporary"],
         },
         city: {
           type: String,
