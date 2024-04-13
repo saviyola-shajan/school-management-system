@@ -23,7 +23,7 @@ export const adminAddStudent = asyncHandler(async (req, res) => {
       address,
       section,
       image,
-      Class,
+      className,
     } = req.body;
     const imageUrl = req.file.originalname;
     const { addressType, city, state, pinCode, landMark } = address;
@@ -37,7 +37,7 @@ export const adminAddStudent = asyncHandler(async (req, res) => {
       !address ||
       !section ||
       !image ||
-      !Class ||
+      !className ||
       !fathersName ||
       !fathersPhoneNumber ||
       !mothersName ||
@@ -70,7 +70,7 @@ export const adminAddStudent = asyncHandler(async (req, res) => {
       },
       section,
       image: imageUrl,
-      Class,
+      className,
       fathersName,
       fathersPhoneNumber,
       mothersName,

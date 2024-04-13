@@ -44,13 +44,15 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    Class: {
-      type: String,
-      required: true,
+    className: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Class',
+    required: true
     },
     section: {
-      type: String,
-      enum: ["A", "B", "C", "D"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Class',
+      required: true
     },
     image: {
       type: String,

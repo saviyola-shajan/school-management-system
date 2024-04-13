@@ -236,4 +236,3 @@ export const deleteTeacher = asyncHandler(async (req, res) => {
   }
 });
 
-//add attendence teacher
