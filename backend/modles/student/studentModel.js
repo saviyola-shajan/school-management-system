@@ -51,7 +51,7 @@ const studentSchema = mongoose.Schema(
     },
     section: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:'Class',
+      ref:'Section',
       required: true
     },
     image: {

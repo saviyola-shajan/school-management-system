@@ -18,9 +18,9 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
       address,
       section,
       image,
-      Class,
+      className,
     } = req.body;
-    const imageUrl = req.file.originalname;
+    const imageUrl = req.file
     const { addressType, city, state, pinCode, landMark } = address;
     if (
       !name ||
@@ -32,7 +32,7 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
       !address ||
       !section ||
       !image ||
-      !Class
+      !className
     ) {
       res.status(400).json({ message: "Please fill all fields" });
     }
@@ -58,7 +58,7 @@ export const adminAddTeacher = asyncHandler(async (req, res) => {
       },
       section,
       image: imageUrl,
-      Class,
+      className,
     });
     await teacher.save();
     const sendEmail = await sendEmailwithCredentials(
@@ -168,7 +168,7 @@ export const updateTeacher = asyncHandler(async (req, res) => {
       dob,
       gender,
       bloodGroup,
-      Class,
+      className,
       section,
       image,
       subject,
@@ -188,7 +188,7 @@ export const updateTeacher = asyncHandler(async (req, res) => {
     if (gender !== undefined && gender !== "") existingTeacher.gender = gender;
     if (bloodGroup !== undefined && bloodGroup !== "")
       existingTeacher.bloodGroup = bloodGroup;
-    if (Class !== undefined && Class !== "") existingTeacher.Class = Class;
+    if (className !== undefined && className !== "") existingTeacher.className = className;
     if (section !== undefined && section !== "")
       existingTeacher.section = section;
     if (image !== undefined && image !== "") existingTeacher.image = image;
@@ -235,4 +235,24 @@ export const deleteTeacher = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+
+//get all teachers
+export const getAllTeachers = asyncHandler(async(req,res)=>{
+  try{
+const teachers= await Teacher.find({}).populate({
+  path:"subject",
+  select:"subjectName"
+}).populate({
+path:"section",
+select:"sectionName"
+}).populate({
+  path:"className",
+  select:"className"
+})
+res.status(200).json({teachers,message:"All teachers rendered"})
+  }catch(error){
+throw new Error(error)
+  }
+})
 

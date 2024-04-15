@@ -7,12 +7,12 @@ export const addClass = asyncHandler(async (req, res) => {
     const { className, romanLetter, noOfStudents, inCharge, section } =
       req.body;
     if (!className || !romanLetter || !noOfStudents || !inCharge || !section) {
-      res.status(400).json({ message: "Enter all fields" });
+     return res.status(400).json({ message: "Enter all fields" });
     }
     const existingClass = await Class.findOne({ className });
     if (existingClass) {
       return res.status(400).json({ message: "class already exist" });
-    }
+    }     
     const addClass = await Class.create({
       className,
       romanLetter,
@@ -26,3 +26,20 @@ export const addClass = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+
+//get all classes
+export const getAllClasses=asyncHandler(async(req,res)=>{
+    try{
+const classes= await Class.find({}).populate({
+    path:"inCharge",
+    select:"name"
+}).populate({
+  path:"section",
+  select:"sectionName"
+})
+res.status(200).json({classes})
+    }catch(error){
+throw new Error(error)
+    }
+})

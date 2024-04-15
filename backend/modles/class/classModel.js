@@ -11,8 +11,9 @@ required:true
     required:true
 },
 section:{
-  type: String,
-  enum: ["A", "B", "C", "D"],
+  type:mongoose.Schema.Types.ObjectId,
+  ref:"Setion",
+  required:true
 },
 noOfStudents:{
   type:Number,
@@ -22,6 +23,8 @@ inCharge:{
   type:mongoose.Schema.Types.ObjectId,
   ref:"Teacher",
   required:true
-}})
+}},{
+  timestamps:true
+})
   const Class = mongoose.model('Class',classSchema)
 export default Class

@@ -42,14 +42,15 @@ const teacherSchema = mongoose.Schema(
       ref:'Subject',
       required: true,
     }],
-    Class: {
-      type: String,
+    className: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Class',
       required: true,
     },
     section: {
-      type: String,
-      enum: ["A", "B", "C", "D"],
-      required:true
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Section',
+      required: true,
     },
     image: {
       type: String,

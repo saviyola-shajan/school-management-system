@@ -257,3 +257,21 @@ export const deleteStudent = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+//get all students
+export const getAllStudents = asyncHandler(async (req, res) => {
+  try {
+    const students = await Student.find({})
+      .populate({
+        path: "className",
+        select: "className",
+      })
+      .populate({
+        path: "section",
+        select: "sectionName",
+      });
+    res.status(200).json({ students, message: "All students rendered" });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
