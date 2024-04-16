@@ -12,4 +12,5 @@ studentRouter.post("/verifyotp",studentVerifyOtp)
 studentRouter.post("/resetpassword",studentResetPassword)
 
 
+
 export default studentRouter

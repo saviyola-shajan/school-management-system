@@ -24,11 +24,31 @@ export const addSubject = asyncHandler(async (req, res) => {
   }
 });
 
+//edit subject
+export const editSubject=asyncHandler(async(req,res)=>{
+  try{
+const subjectId=req.params._id
+const {subjectCode,subjectName}=req.body
+const existingSubject =await Section.findOne({subjectId})
+if(!existingSubject){
+  return res.status(400).json({message:"Section not found"})
+}
+if(subjectCode!==undefined&&subjectCode!=="")existingSubject.subjectCode=subjectCode
+if(subjectName!==undefined&&subjectName!=="")existingSubject.subjectName=subjectName
+await existingSubject.save()
+res
+.status(200)
+.json({ message: "Subject updated successfully", existingSubject });
+  }catch(error){
+    throw new Error(error)
+  }
+})
+
 //delete subject
 export const deleteSubject=asyncHandler(async(req,res)=>{
   try{
 const subjectId=req.params._id
-const subject = await Subject.findOne({subjectId})
+const subject = await Subject.findOneAndDelete({subjectId})
 if (subject) {
   res.status(200).json({ message: "subject deleted successfully" });
 } else {

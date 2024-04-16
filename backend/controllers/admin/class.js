@@ -28,6 +28,47 @@ export const addClass = asyncHandler(async (req, res) => {
 });
 
 
+//edit class
+export const editClass=asyncHandler(async(req,res)=>{
+  try{
+const classId=req.params._id
+const {className,romanLetter,noOfStudents,inCharge,section}=req.body
+const existingClass =await Class.findOne({classId})
+if(!existingClass){
+  return res.status(400).json({message:"Class not found"})
+}
+if(className!==undefined&&className!=="")existingClass.className=className
+if(romanLetter!==undefined&&romanLetter!=="")existingClass.romanLetter=romanLetter
+if(noOfStudents!==undefined&&noOfStudents!=="")existingClass.noOfStudents=noOfStudents
+if(inCharge!==undefined&&inCharge!=="")existingClass.inCharge=inCharge
+if(section!==undefined&&section!=="")existingClass.section=section
+
+await existingClass.save()
+res
+.status(200)
+.json({ message: "Class updated successfully", existingClass });
+  }catch(error){
+    throw new Error(error)
+  }
+})
+
+
+//delete class
+export const deleteClass=asyncHandler(async(req,res)=>{
+  try{
+const classId=req.params._id
+const deletedClass = await Class.findOneAndDelete({classId})
+if (deletedClass) {
+  res.status(200).json({ message: "class deleted successfully" });
+} else {
+  res.status(404).json({ message: "class not found" });
+}
+  }catch(error){
+    throw new Error(error)
+  }
+})
+
+
 //get all classes
 export const getAllClasses=asyncHandler(async(req,res)=>{
     try{

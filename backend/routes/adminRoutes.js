@@ -2,9 +2,9 @@ import  express  from "express";
 import { adminLogin,adminSignup ,adminForgotPassword,adminVerifyOtp,adminResetPassword} from "../controllers/admin/adminLogin.js";
 import { adminAddTeacher,teacherBlock,updateTeacher,deleteTeacher,getAllTeachers } from "../controllers/admin/adminTeacher.js";
 import { adminAddStudent,studentBlock ,updateStudent,deleteStudent,getAllStudents} from "../controllers/admin/adminStudent.js";
-import { addClass,getAllClasses } from "../controllers/admin/class.js";
-import { addSubject,getAllSubjects } from "../controllers/admin/subject.js";
-import { addSection,getAllSections } from "../controllers/admin/section.js";
+import { addClass,getAllClasses,deleteClass,editClass } from "../controllers/admin/class.js";
+import { addSubject,getAllSubjects,deleteSubject,editSubject } from "../controllers/admin/subject.js";
+import { addSection,getAllSections,deleteSection,editSection } from "../controllers/admin/section.js";
 import upload from '../middleware/multterMiddleware.js';
 
 const adminRouter =express.Router()
@@ -36,15 +36,23 @@ adminRouter.get('/getallstudents',getAllStudents)
 //class routes
 adminRouter.post('/addclass',addClass)
 adminRouter.get('/getallclasses',getAllClasses)
+adminRouter.post('/deleteclass',deleteClass)
+adminRouter.post('/editclass',editClass)
 
 
 //subject routes
 adminRouter.post('/addsubject',addSubject)
 adminRouter.get('/getallsubjects',getAllSubjects)
+adminRouter.post('/deletesubject',deleteSubject)
+adminRouter.post('/editsubject',editSubject)
 
 //secion routes
 adminRouter.post('/addsection',addSection)
 adminRouter.get('/getallsections',getAllSections)
+adminRouter.post('/deletesection',deleteSection)
+adminRouter.post('/editsection',editSection)
 
+
+//notification routes
 export default adminRouter
 
