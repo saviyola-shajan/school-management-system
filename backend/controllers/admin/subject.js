@@ -24,6 +24,21 @@ export const addSubject = asyncHandler(async (req, res) => {
   }
 });
 
+//delete subject
+export const deleteSubject=asyncHandler(async(req,res)=>{
+  try{
+const subjectId=req.params._id
+const subject = await Subject.findOne({subjectId})
+if (subject) {
+  res.status(200).json({ message: "subject deleted successfully" });
+} else {
+  res.status(404).json({ message: "subject not found" });
+}
+  }catch(error){
+    throw new Error(error)
+  }
+})
+
 //get all subjects
 export const getAllSubjects=asyncHandler(async(req,res)=>{
     try{

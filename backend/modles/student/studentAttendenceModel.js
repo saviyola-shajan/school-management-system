@@ -18,8 +18,9 @@ const studentAttendenceSchema = mongoose.Schema(
       required: true,
     },
     subject: {
-        type: String,
-        required:true
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Subject',
+      required: true,
       },
       teacherId:{
         type:mongoose.Schema.Types.ObjectId,

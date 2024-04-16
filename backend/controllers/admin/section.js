@@ -22,6 +22,8 @@ export const addSection = asyncHandler(async (req, res) => {
   }
 });
 
+//delete section
+
 //get all sections
 export const getAllSections = asyncHandler(async (req, res) => {
   try {
