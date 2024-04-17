@@ -5,6 +5,7 @@ import { adminAddStudent,studentBlock ,updateStudent,deleteStudent,getAllStudent
 import { addClass,getAllClasses,deleteClass,editClass } from "../controllers/admin/class.js";
 import { addSubject,getAllSubjects,deleteSubject,editSubject } from "../controllers/admin/subject.js";
 import { addSection,getAllSections,deleteSection,editSection } from "../controllers/admin/section.js";
+import { addNotification,getAllNotifications,deleteNotification,editNotification } from "../controllers/admin/notification.js";
 import upload from '../middleware/multterMiddleware.js';
 
 const adminRouter =express.Router()
@@ -54,5 +55,10 @@ adminRouter.post('/editsection',editSection)
 
 
 //notification routes
+adminRouter.post('/addnotification',addNotification)
+adminRouter.get('/getallnotifications',getAllNotifications)
+adminRouter.post('/editnotification',editNotification)
+adminRouter.post('/deletenotification',deleteNotification)
+
 export default adminRouter
 
