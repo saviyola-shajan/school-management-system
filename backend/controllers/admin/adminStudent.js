@@ -151,7 +151,6 @@ export const studentBlock = asyncHandler(async (req, res) => {
   try {
     const studentID = req.params._id;
     const student = await Student.finOne({ studentID });
-    console.log(student);
     student.isBlock = !student.isBlock;
     await student.save();
     if (student) {
@@ -204,7 +203,6 @@ export const updateStudent = asyncHandler(async (req, res) => {
       address,
     } = req.body;
     const existingStudent = await Student.findOne({ studentID });
-    console.log(existingStudent);
     if (!existingStudent) {
       return res.status(404).json({ message: "student not found" });
     }

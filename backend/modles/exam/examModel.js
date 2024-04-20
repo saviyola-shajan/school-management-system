@@ -42,6 +42,14 @@ const examresultSchema = mongoose.Schema(
       type: Date,
       default: Date,
     },
+    remark:{
+      type:String,
+      enum:["Passed",'Failed']
+    },
+    isBlock:{
+      type:Boolean,
+      default:false
+  }
   },
   {
     timestamps: true,
