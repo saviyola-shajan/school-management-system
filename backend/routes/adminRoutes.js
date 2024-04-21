@@ -6,6 +6,7 @@ import { addClass,getAllClasses,deleteClass,editClass } from "../controllers/adm
 import { addSubject,getAllSubjects,deleteSubject,editSubject } from "../controllers/admin/subject.js";
 import { addSection,getAllSections,deleteSection,editSection } from "../controllers/admin/section.js";
 import { addNotification,getAllNotifications,deleteNotification,editNotification } from "../controllers/admin/notification.js";
+import { addResult,getAllExamResults,deleteExamresult,blockResult,editExamResult } from "../controllers/admin/examResult.js";
 import upload from '../middleware/multterMiddleware.js';
 
 const adminRouter =express.Router()
@@ -34,31 +35,40 @@ adminRouter.post('/deletestudent/:id',deleteStudent)
 adminRouter.post('/updatestudent/:id',upload.single('image'),updateStudent)
 adminRouter.get('/getallstudents',getAllStudents)
 
+///////////////////check in postman
+
 //class routes
 adminRouter.post('/addclass',addClass)
 adminRouter.get('/getallclasses',getAllClasses)
-adminRouter.post('/deleteclass',deleteClass)
-adminRouter.post('/editclass',editClass)
+adminRouter.post('/deleteclass/:id',deleteClass)
+adminRouter.post('/editclass/:id',editClass)
 
 
 //subject routes
 adminRouter.post('/addsubject',addSubject)
 adminRouter.get('/getallsubjects',getAllSubjects)
-adminRouter.post('/deletesubject',deleteSubject)
-adminRouter.post('/editsubject',editSubject)
+adminRouter.post('/deletesubject/:id',deleteSubject)
+adminRouter.post('/editsubject/:id',editSubject)
 
 //secion routes
 adminRouter.post('/addsection',addSection)
 adminRouter.get('/getallsections',getAllSections)
-adminRouter.post('/deletesection',deleteSection)
-adminRouter.post('/editsection',editSection)
+adminRouter.post('/deletesection/:id',deleteSection)
+adminRouter.post('/editsection/:id',editSection)
 
 
 //notification routes
 adminRouter.post('/addnotification',addNotification)
 adminRouter.get('/getallnotifications',getAllNotifications)
-adminRouter.post('/editnotification',editNotification)
-adminRouter.post('/deletenotification',deleteNotification)
+adminRouter.post('/editnotification/:id',editNotification)
+adminRouter.post('/deletenotification/:id',deleteNotification)
+
+//exam results routes
+adminRouter.post('/addexamresults',addResult)
+adminRouter.post('/editexamresult/:id',editExamResult)
+adminRouter.post('/deleteexamresult/:id',editExamResult)
+adminRouter.post('/blockexamresult/:id',blockResult)
+adminRouter.get('/getallresults',getAllExamResults)
 
 export default adminRouter
 

@@ -9,7 +9,6 @@ export const addAttendence=asyncHandler(async(req,res)=>{
     try{
   const{date,status,teacherId}=req.body
   const teachers=await Teacher.find({})
-  
     }catch(error){
       throw new Error(error)
     }

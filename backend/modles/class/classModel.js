@@ -12,7 +12,7 @@ required:true
 },
 section:{
   type:mongoose.Schema.Types.ObjectId,
-  ref:"Setion",
+  ref:"Section",
   required:true
 },
 noOfStudents:{

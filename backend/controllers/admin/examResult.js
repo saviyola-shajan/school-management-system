@@ -90,3 +90,26 @@ if (examResult) {
 })
 
 //delete exam result
+export const deleteExamresult=asyncHandler(async(req,res)=>{
+  try{
+    const examId = req.params._id;
+    const deleteExam = await ExamResult.findOneAndDelete({ examId });
+    if (deleteExam) {
+      res.status(200).json({ message: "Exam Result deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Exam Result not found" });
+    }
+  }catch(error){
+    throw new Error(error)
+  }
+})
+
+//get all exam results
+export const getAllExamResults=asyncHandler(async(req,res)=>{
+  try{
+const examResults=await ExamResult.find({})
+return res.status(200).json({examResults,message:"Rendered all exam results"})
+  }catch(error){
+    throw new Error(error)
+  }
+})
