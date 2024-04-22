@@ -7,6 +7,7 @@ import { addSubject,getAllSubjects,deleteSubject,editSubject } from "../controll
 import { addSection,getAllSections,deleteSection,editSection } from "../controllers/admin/section.js";
 import { addNotification,getAllNotifications,deleteNotification,editNotification } from "../controllers/admin/notification.js";
 import { addResult,getAllExamResults,deleteExamresult,blockResult,editExamResult } from "../controllers/admin/examResult.js";
+import { getAllLeaveTeacher,getAllLeavestudent,leaveStatusStudent,leaveStatusTeacher } from "../controllers/admin/approveLeave.js";
 import upload from '../middleware/multterMiddleware.js';
 
 const adminRouter =express.Router()
@@ -66,9 +67,15 @@ adminRouter.post('/deletenotification/:id',deleteNotification)
 //exam results routes
 adminRouter.post('/addexamresults',addResult)
 adminRouter.post('/editexamresult/:id',editExamResult)
-adminRouter.post('/deleteexamresult/:id',editExamResult)
+adminRouter.post('/deleteexamresult/:id',deleteExamresult)
 adminRouter.post('/blockexamresult/:id',blockResult)
 adminRouter.get('/getallresults',getAllExamResults)
+
+//leave forms
+adminRouter.get('/getallleaveforms-student',getAllLeavestudent)
+adminRouter.get('/getallleaveforms-teacher',getAllLeaveTeacher)
+adminRouter.post('/approveleave-student/:id',leaveStatusStudent)
+adminRouter.post('/approveleave-teacher/:id',leaveStatusTeacher)
 
 export default adminRouter
 
