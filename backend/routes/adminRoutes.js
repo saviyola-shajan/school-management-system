@@ -8,6 +8,8 @@ import { addSection,getAllSections,deleteSection,editSection } from "../controll
 import { addNotification,getAllNotifications,deleteNotification,editNotification } from "../controllers/admin/notification.js";
 import { addResult,getAllExamResults,deleteExamresult,blockResult,editExamResult } from "../controllers/admin/examResult.js";
 import { getAllLeaveTeacher,getAllLeavestudent,leaveStatusStudent,leaveStatusTeacher } from "../controllers/admin/approveLeave.js";
+import { addAttendanceTeacher,editAttendanceTeacher } from "../controllers/admin/attendenceTeacher.js";
+import { addStudentAttendance,editStudentAttendance } from "../controllers/admin/attendenceStudent.js";
 import upload from '../middleware/multterMiddleware.js';
 
 const adminRouter =express.Router()
@@ -76,6 +78,14 @@ adminRouter.get('/getallleaveforms-student',getAllLeavestudent)
 adminRouter.get('/getallleaveforms-teacher',getAllLeaveTeacher)
 adminRouter.post('/approveleave-student/:id',leaveStatusStudent)
 adminRouter.post('/approveleave-teacher/:id',leaveStatusTeacher)
+
+//teacher attendence
+adminRouter.post('/addattendenceteacher',addAttendanceTeacher)
+adminRouter.post('/editattendenceteacher',editAttendanceTeacher)
+
+//student attendence
+adminRouter.post('/addattendencestudent',addStudentAttendance)
+adminRouter.post('/editattendencestudent',editStudentAttendance)
 
 export default adminRouter
 
