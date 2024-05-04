@@ -8,8 +8,8 @@ import { addSection,getAllSections,deleteSection,editSection } from "../controll
 import { addNotification,getAllNotifications,deleteNotification,editNotification } from "../controllers/admin/notification.js";
 import { addResult,getAllExamResults,deleteExamresult,blockResult,editExamResult } from "../controllers/admin/examResult.js";
 import { getAllLeaveTeacher,getAllLeavestudent,leaveStatusStudent,leaveStatusTeacher } from "../controllers/admin/approveLeave.js";
-import { addAttendanceTeacher,editAttendanceTeacher } from "../controllers/admin/attendenceTeacher.js";
-import { addStudentAttendance,editStudentAttendance } from "../controllers/admin/attendenceStudent.js";
+import { addAttendanceTeacher,editAttendanceTeacher,allAttendenceTeacher } from "../controllers/admin/attendenceTeacher.js";
+import { addStudentAttendance,editStudentAttendance,allAttendenceStudent } from "../controllers/admin/attendenceStudent.js";
 import upload from '../middleware/multterMiddleware.js';
 
 const adminRouter =express.Router()
@@ -82,10 +82,12 @@ adminRouter.post('/approveleave-teacher/:id',leaveStatusTeacher)
 //teacher attendence
 adminRouter.post('/addattendenceteacher',addAttendanceTeacher)
 adminRouter.post('/editattendenceteacher',editAttendanceTeacher)
+adminRouter.get('/allattendence',allAttendenceTeacher)
 
 //student attendence
 adminRouter.post('/addattendencestudent',addStudentAttendance)
 adminRouter.post('/editattendencestudent',editStudentAttendance)
+adminRouter.get('/allattendence',allAttendenceStudent)
 
 export default adminRouter
 

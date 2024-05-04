@@ -68,7 +68,7 @@ export const editStudentAttendance = asyncHandler(async (req, res) => {
         });
     }
 
-    const attendanceRecord = await StudentAttendance.findOne({
+    const attendanceRecord = await StudentAttendence.findOne({
       studentId,
       date,
     });
@@ -109,3 +109,13 @@ export const editStudentAttendance = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+//get all student attendence
+export const allAttendenceStudent=asyncHandler(async(req,res)=>{
+  try{
+const allAttendence=await StudentAttendence.find({})
+res.status(201).json({message:"All attendence Fetched",allAttendence})
+  }catch(error){
+    throw new Error(error)
+  }
+})

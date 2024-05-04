@@ -1,12 +1,8 @@
-import TeacherAttendance from "../../modles/teacher/teacherAttendenceModel.js";
 import asyncHandler from "express-async-handler";
+import TeacherAttendance from "../../modles/teacher/teacherAttendenceModel.js";
 import Teacher from "../../modles/teacher/teacherModel.js";
 
 //add attendence teacher
-const Teacher = require("./models/Teacher");
-const TeacherAttendance = require("./models/TeacherAttendance");
-const asyncHandler = require("express-async-handler");
-
 export const addAttendanceTeacher = asyncHandler(async (req, res) => {
   try {
     const { date, status, teacherId } = req.body;
@@ -66,3 +62,13 @@ export const editAttendanceTeacher = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+//get all attendence
+export const allAttendenceTeacher=asyncHandler(async(req,res)=>{
+  try{
+const allAttendence=await TeacherAttendance.find({})
+res.status(201).json({message:"All attendence fetched",allAttendence})
+  }catch(error){
+    throw new Error(error)
+  }
+})
