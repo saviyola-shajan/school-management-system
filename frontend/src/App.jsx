@@ -1,7 +1,13 @@
+import Header from "./components/admin/header.jsx"
+import Sidebar from "./components/admin/sidebar.jsx"
+
 function App() {
 
   return (
-<h1>Frontend is READY</h1>
+    <>
+    <Header/>
+    <Sidebar/>
+    </>
   )
 }
 
